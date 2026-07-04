@@ -1,24 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
-import { lookupFlight, lookupFlightForPickup } from "@/lib/fr24";
+import { getProvider } from "@/lib/providers";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { flightId: string; date: string } }
 ) {
   const { flightId, date } = params;
-  const mode = request.nextUrl.searchParams.get("mode");
+  const scenario =
+    request.nextUrl.searchParams.get("mode") === "pickup"
+      ? ("pickup" as const)
+      : ("delay-check" as const);
 
-  const flight =
-    mode === "pickup"
-      ? await lookupFlightForPickup(flightId, date)
-      : await lookupFlight(flightId, date);
+  try {
+    const flight = await getProvider().getFlight({
+      flightNumber: flightId,
+      date,
+      scenario,
+    });
 
-  if (!flight) {
+    if (!flight) {
+      return NextResponse.json({ error: "Flight not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(flight);
+  } catch (err) {
+    console.error(`Flight lookup failed for ${flightId}/${date}:`, err);
     return NextResponse.json(
-      { error: "Flight not found" },
-      { status: 404 }
+      { error: "Flight data provider is unavailable" },
+      { status: 502 }
     );
   }
-
-  return NextResponse.json(flight);
 }

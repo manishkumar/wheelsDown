@@ -122,6 +122,58 @@ input[type="range"]::-moz-range-track {
   height: 2px;
 }
 
+/* ===== BOARDING PASS ===== */
+/* Semicircle notches punched out of the seam between the pass body and its
+   stub, using masks so they work over any backdrop (the sky gradient). Each
+   half masks its own half-circle; browsers without mask-composite simply
+   render an un-notched card. */
+.pass-main {
+  -webkit-mask-image:
+    radial-gradient(circle 10px at 0 100%, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 100%, transparent 98%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 10px at 0 100%, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 100%, transparent 98%, #000 100%);
+  mask-composite: intersect;
+}
+
+.pass-stub {
+  -webkit-mask-image:
+    radial-gradient(circle 10px at 0 0, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 0, transparent 98%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 10px at 0 0, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 0, transparent 98%, #000 100%);
+  mask-composite: intersect;
+}
+
+/* ===== BARCODE ===== */
+.barcode {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(44, 44, 44, 0.55) 0px,
+    rgba(44, 44, 44, 0.55) 1px,
+    transparent 1px,
+    transparent 3px,
+    rgba(44, 44, 44, 0.55) 3px,
+    rgba(44, 44, 44, 0.55) 5px,
+    transparent 5px,
+    transparent 6px
+  );
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fly-across,
+  .animate-float,
+  .animate-pulse-amber,
+  .contrail {
+    animation: none !important;
+  }
+}
+
 /* ===== BUTTON PRESS ===== */
 .btn-press:active {
   transform: scale(0.96);
