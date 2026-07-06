@@ -11,6 +11,12 @@ Wheels Down is an open-source flight delay predictor and airport-pickup timer. I
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
 [![Tests](https://img.shields.io/badge/tests-vitest-6E9F18)](src/lib/__tests__)
 
+<p align="center">
+  <img src="docs/screenshots/search.png" width="32%" alt="Search screen — split-flap board hero and flight lookup" />
+  <img src="docs/screenshots/flight-status.png" width="32%" alt="Flight status screen — delay verdict and inbound-aircraft insight" />
+  <img src="docs/screenshots/pickup.png" width="32%" alt="Pickup screen — landing countdown and leave-by time" />
+</p>
+
 ---
 
 ## The insight

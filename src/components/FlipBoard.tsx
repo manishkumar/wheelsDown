@@ -152,21 +152,44 @@ export function FlipBoard({
   staggerMs?: number;
 }) {
   const reducedMotion = useReducedMotion();
-  const chars = text.split("");
+  // Split into words so a wrapping container only breaks lines between
+  // words, never mid-word (each word is kept together via flex-nowrap).
+  const words = text.split(" ");
+  let charIndex = 0;
 
   return (
-    <span className={`inline-flex ${className}`} role="text" aria-label={text}>
-      {chars.map((ch, i) => (
-        <FlapTile
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          target={ch === " " ? " " : ch.toUpperCase()}
-          delayMs={i * staggerMs}
-          flipDurationMs={flipDurationMs}
-          reducedMotion={reducedMotion}
-          tileClassName={tileClassName}
-        />
-      ))}
+    <span className={`inline-flex flex-wrap ${className}`} role="text" aria-label={text}>
+      {words.map((word, wordIdx) => {
+        const start = charIndex;
+        charIndex += word.length + 1;
+        return (
+          // A fragment-like pair: the word itself never breaks (flex-nowrap),
+          // but the space after it is a separate flex item at the top level,
+          // so the line can only wrap between words.
+          <span key={wordIdx} className="inline-flex flex-nowrap">
+            {word.split("").map((ch, i) => (
+              <FlapTile
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
+                target={ch.toUpperCase()}
+                delayMs={(start + i) * staggerMs}
+                flipDurationMs={flipDurationMs}
+                reducedMotion={reducedMotion}
+                tileClassName={tileClassName}
+              />
+            ))}
+            {wordIdx < words.length - 1 && (
+              <FlapTile
+                target=" "
+                delayMs={0}
+                flipDurationMs={flipDurationMs}
+                reducedMotion={reducedMotion}
+                tileClassName={tileClassName}
+              />
+            )}
+          </span>
+        );
+      })}
     </span>
   );
 }
