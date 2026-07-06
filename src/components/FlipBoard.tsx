@@ -1,0 +1,130 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const RANDOM_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function randomChar() {
+  return RANDOM_CHARS[Math.floor(Math.random() * RANDOM_CHARS.length)];
+}
+
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const handler = () => setReduced(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return reduced;
+}
+
+/** A single split-flap character tile: amber glyph on a recessed board-well
+ * face, with a thin hairline seam across the middle like a real flap unit. */
+function FlapTile({
+  target,
+  delayMs,
+  flipDurationMs,
+  reducedMotion,
+  tileClassName,
+}: {
+  target: string;
+  delayMs: number;
+  flipDurationMs: number;
+  reducedMotion: boolean;
+  tileClassName: string;
+}) {
+  const [display, setDisplay] = useState(reducedMotion ? target : "");
+  const [flipKey, setFlipKey] = useState(0);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+
+    if (reducedMotion) {
+      setDisplay(target);
+      return;
+    }
+
+    const stepCount = 3 + Math.floor(Math.random() * 2);
+    const sequence = Array.from({ length: stepCount }, () => randomChar());
+    sequence.push(target);
+
+    sequence.forEach((char, i) => {
+      const timer = setTimeout(
+        () => {
+          setDisplay(char);
+          setFlipKey((k) => k + 1);
+        },
+        delayMs + i * flipDurationMs
+      );
+      timersRef.current.push(timer);
+    });
+
+    return () => timersRef.current.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, delayMs, flipDurationMs, reducedMotion]);
+
+  if (target === " ") {
+    return <span className="inline-block w-[0.55em]" aria-hidden />;
+  }
+
+  return (
+    <span
+      className={`flap-tile relative inline-flex items-center justify-center bg-board-well border border-hairline rounded-[4px] shadow-[inset_0_1px_3px_rgba(0,0,0,0.7)] ${tileClassName}`}
+    >
+      <span
+        key={flipKey}
+        className="flap-tile-inner animate-flap-flip block text-flap-amber"
+        style={{ animationDuration: `${flipDurationMs}ms` }}
+      >
+        {display}
+      </span>
+      <span className="pointer-events-none absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-board-ink/80" />
+    </span>
+  );
+}
+
+/**
+ * Split-flap "Solari board" text display. Renders `text` as a row of
+ * character tiles that flip through a few random glyphs before settling on
+ * the final character, staggered left-to-right so it reads like a real
+ * arrivals board updating. Spaces render as blank gaps (no tile chrome).
+ *
+ * Reserved for the app's four signature moments (hero headline, flight
+ * status word, countdown number) — not a general-purpose text animation.
+ */
+export function FlipBoard({
+  text,
+  className = "",
+  tileClassName = "",
+  flipDurationMs = 380,
+  staggerMs = 40,
+}: {
+  text: string;
+  className?: string;
+  tileClassName?: string;
+  flipDurationMs?: number;
+  staggerMs?: number;
+}) {
+  const reducedMotion = useReducedMotion();
+  const chars = text.split("");
+
+  return (
+    <span className={`inline-flex ${className}`} role="text" aria-label={text}>
+      {chars.map((ch, i) => (
+        <FlapTile
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          target={ch === " " ? " " : ch.toUpperCase()}
+          delayMs={i * staggerMs}
+          flipDurationMs={flipDurationMs}
+          reducedMotion={reducedMotion}
+          tileClassName={tileClassName}
+        />
+      ))}
+    </span>
+  );
+}

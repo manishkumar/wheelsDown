@@ -9,24 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        sky: "#E8F4FD",
-        cloud: "#FAFAF8",
-        tarmac: "#2C2C2C",
-        amber: {
-          DEFAULT: "#E8A020",
-          light: "#FDF0D5",
-        },
-        stripe: "#1A5276",
-        green: "#1A7A4A",
-        red: "#B03A2E",
-        gray: {
-          DEFAULT: "#8A8A8A",
-          light: "#E8E8E8",
-          input: "#F5F7FA",
-          border: "#E0E0E0",
-        },
+        "board-ink": "#0C1016",
+        "board-well": "#05070A",
+        "board-panel": "#12161D",
+        "flap-amber": "#FFB01A",
+        "flap-green": "#33D17A",
+        "flap-red": "#FF4D4F",
+        chalk: "#F2F3F5",
+        mist: "#8992A3",
+        hairline: "rgba(242,243,245,0.08)",
         whatsapp: "#25D366",
-        // shadcn compatibility
+        // shadcn compatibility (left in place; not used by restyled components)
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -62,7 +55,7 @@ const config: Config = {
         ring: "hsl(var(--ring))",
       },
       fontFamily: {
-        display: ["Playfair Display", "serif"],
+        display: ["Space Grotesk", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
         body: ["Inter", "sans-serif"],
       },
@@ -72,17 +65,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "fly-across": {
-          "0%": { transform: "translateX(-120px)" },
-          "100%": { transform: "translateX(calc(100vw + 120px))" },
-        },
-        "float": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-4px)" },
-        },
         "pulse-amber": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(232, 160, 32, 0.4)" },
-          "50%": { boxShadow: "0 0 0 12px rgba(232, 160, 32, 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(255, 176, 26, 0.4)" },
+          "50%": { boxShadow: "0 0 0 12px rgba(255, 176, 26, 0)" },
         },
         "scale-tick": {
           "0%": { transform: "scale(1)" },
@@ -93,20 +78,25 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(12px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        "contrail": {
-          "0%": { width: "0px", opacity: "0.6" },
-          "70%": { width: "200px", opacity: "0.3" },
-          "100%": { width: "250px", opacity: "0" },
+        "flap-flip": {
+          "0%": { transform: "rotateX(0deg)" },
+          "50%": { transform: "rotateX(-90deg)" },
+          "51%": { transform: "rotateX(90deg)" },
+          "100%": { transform: "rotateX(0deg)" },
+        },
+        "text-pulse": {
+          "0%, 100%": { opacity: "0.3" },
+          "50%": { opacity: "1" },
         },
       },
       animation: {
-        "fly-across": "fly-across 20s linear infinite",
-        "float": "float 2s ease-in-out infinite",
         "pulse-amber": "pulse-amber 1.5s ease-in-out infinite",
         "scale-tick": "scale-tick 300ms ease-in-out",
         "fade-in-up": "fade-in-up 400ms ease-out",
         "fade-in-up-delay-1": "fade-in-up 400ms ease-out 150ms both",
         "fade-in-up-delay-2": "fade-in-up 400ms ease-out 300ms both",
+        "flap-flip": "flap-flip 380ms ease-in",
+        "text-pulse": "text-pulse 1.2s ease-in-out infinite",
       },
     },
   },

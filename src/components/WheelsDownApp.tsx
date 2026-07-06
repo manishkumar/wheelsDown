@@ -105,7 +105,7 @@ export function WheelsDownApp({ demoMode }: { demoMode: boolean }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-board-ink">
       {demoMode && <DemoBanner />}
 
       <main className="flex-1 safe-bottom">
@@ -124,7 +124,7 @@ export function WheelsDownApp({ demoMode }: { demoMode: boolean }) {
         )}
 
         {activeTab === "flight" && flight && (
-          <div className="bg-gray-input min-h-screen">
+          <div className="bg-board-ink min-h-screen">
             <AppHeader flightNumber={flight.flightNumber} />
             <div className="p-4">
               <FlightStatusPanel flight={flight} onShare={handleWhatsAppShare} />
@@ -133,7 +133,7 @@ export function WheelsDownApp({ demoMode }: { demoMode: boolean }) {
         )}
 
         {activeTab === "pickup" && flight && (
-          <div className="bg-gray-input min-h-screen">
+          <div className="bg-board-ink min-h-screen">
             <AppHeader flightNumber={flight.flightNumber} />
             <div className="p-4">
               <PickupPanel flight={flight} />

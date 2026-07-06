@@ -1,5 +1,7 @@
 "use client";
 
+import { FlightTailIcon, PickupCarIcon, SearchIcon } from "./icons";
+
 export type Tab = "search" | "flight" | "pickup";
 
 export function BottomNav({
@@ -11,45 +13,43 @@ export function BottomNav({
   onTabChange: (t: Tab) => void;
   hasFlight: boolean;
 }) {
-  const tabs: { id: Tab; icon: string; label: string; enabled: boolean }[] = [
-    { id: "flight", icon: "✈️", label: "MY FLIGHT", enabled: hasFlight },
-    { id: "pickup", icon: "\u{1F697}", label: "PICKUP", enabled: hasFlight },
-    { id: "search", icon: "\u{1F50D}", label: "SEARCH", enabled: true },
+  const tabs: {
+    id: Tab;
+    Icon: typeof FlightTailIcon;
+    label: string;
+    enabled: boolean;
+  }[] = [
+    { id: "flight", Icon: FlightTailIcon, label: "MY FLIGHT", enabled: hasFlight },
+    { id: "pickup", Icon: PickupCarIcon, label: "PICKUP", enabled: hasFlight },
+    { id: "search", Icon: SearchIcon, label: "SEARCH", enabled: true },
   ];
 
   return (
-    <nav
-      className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-light nav-safe-bottom"
-      style={{ boxShadow: "0 -4px 20px rgba(0,0,0,0.06)" }}
-    >
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-board-panel border-t border-hairline nav-safe-bottom">
       <div className="flex h-16">
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
+        {tabs.map(({ id, Icon, label, enabled }) => {
+          const isActive = activeTab === id;
           return (
             <button
-              key={tab.id}
-              onClick={() => tab.enabled && onTabChange(tab.id)}
-              disabled={!tab.enabled}
-              className={`flex-1 flex flex-col items-center justify-center gap-0.5 relative transition-colors min-h-[64px] ${
-                !tab.enabled ? "opacity-30 cursor-default" : "cursor-pointer"
+              key={id}
+              onClick={() => enabled && onTabChange(id)}
+              disabled={!enabled}
+              className={`flex-1 flex flex-col items-center justify-center gap-1 relative transition-colors min-h-[64px] ${
+                !enabled ? "opacity-30 cursor-default" : "cursor-pointer"
               }`}
             >
               {isActive && (
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-amber" />
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-flap-amber" />
               )}
-              <span
-                className={`text-2xl leading-none ${
-                  isActive && tab.id === "flight" ? "animate-float" : ""
-                }`}
-              >
-                {tab.icon}
-              </span>
+              <Icon
+                className={`w-5 h-5 ${isActive ? "text-flap-amber" : "text-mist"}`}
+              />
               <span
                 className={`font-mono text-[10px] tracking-[1px] ${
-                  isActive ? "text-amber" : "text-[#AAAAAA]"
+                  isActive ? "text-flap-amber" : "text-mist"
                 }`}
               >
-                {tab.label}
+                {label}
               </span>
             </button>
           );

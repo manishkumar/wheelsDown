@@ -1,14 +1,15 @@
 "use client";
 
 import { GITHUB_URL } from "@/lib/site";
-import { GitHubIcon, PlaneSVG } from "./icons";
+import { FlipBoard } from "./FlipBoard";
+import { GitHubIcon } from "./icons";
 
 type Persona = "flying" | "pickup";
 
 const DEMO_FLIGHTS = [
-  { id: "6E-456", route: "DEL → BOM", delay: "+42m", color: "#E8A020" },
-  { id: "AI-302", route: "DEL → BLR", delay: "", color: "#1A7A4A" },
-  { id: "UK-835", route: "DEL → MAA", delay: "CXL", color: "#B03A2E" },
+  { id: "6E-456", route: "DEL → BOM", delay: "+42m", color: "text-flap-amber", dot: "bg-flap-amber" },
+  { id: "AI-302", route: "DEL → BLR", delay: "", color: "text-flap-green", dot: "bg-flap-green" },
+  { id: "UK-835", route: "DEL → MAA", delay: "CXL", color: "text-flap-red", dot: "bg-flap-red" },
 ];
 
 export function SearchView({
@@ -33,42 +34,35 @@ export function SearchView({
   demoMode: boolean;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* ─── Sky section ─────────────────────────────────────── */}
-      <div className="sky-gradient aero-grid relative overflow-hidden pt-14 pb-8 px-4">
-        {/* Ambient plane */}
-        <div className="absolute top-16 left-0 right-0 h-16 pointer-events-none motion-reduce:hidden">
-          <div className="relative animate-fly-across">
-            <PlaneSVG className="w-10 h-10" />
-            <div className="contrail" />
-          </div>
-        </div>
-
-        {/* Hero */}
+    <div className="min-h-screen flex flex-col bg-board-ink">
+      {/* ─── Hero ─────────────────────────────────────── */}
+      <div className="relative pt-14 pb-8 px-4">
         <div className="text-center mt-14 mb-6">
-          <p className="font-mono text-[10px] tracking-[3px] text-stripe/70 uppercase mb-3">
+          <p className="font-mono text-[10px] tracking-[3px] text-mist uppercase mb-4">
             Open source &middot; Tail-number tracking
           </p>
-          <h1 className="font-display text-[34px] leading-[1.2] text-tarmac font-bold">
-            Know before the airline tells you.
-          </h1>
-          <p className="text-[15px] text-gray mt-2.5 max-w-[320px] mx-auto">
+          <FlipBoard
+            text="KNOW BEFORE THE AIRLINE TELLS YOU"
+            className="flex-wrap justify-center gap-[3px] max-w-[340px] mx-auto"
+            tileClassName="w-[18px] h-[24px] text-[13px] font-display font-bold my-[2px]"
+            staggerMs={22}
+          />
+          <p className="text-[15px] text-mist mt-5 max-w-[320px] mx-auto font-body">
             Wheels Down watches the aircraft flying in for your flight — not
             the departure board. When the inbound plane runs late, you hear it
             here first.
           </p>
         </div>
 
-        {/* ─── Boarding-pass search card ───────────────────── */}
-        <div className="mx-auto max-w-md" style={{ filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.10))" }}>
-          {/* Main section of the pass */}
-          <div className="pass-main bg-white rounded-t-[20px] p-5">
+        {/* ─── Board terminal panel ───────────────────── */}
+        <div className="mx-auto max-w-md">
+          <div className="bg-board-well border border-hairline rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[9px] tracking-[2px] text-[#AAAAAA] uppercase">
-                Wheels Down &middot; Boarding intel
+              <span className="font-mono text-[9px] tracking-[2px] text-mist uppercase">
+                Flight
               </span>
-              <span className="font-mono text-[9px] tracking-[2px] text-[#AAAAAA] uppercase">
-                Gate: Any
+              <span className="font-mono text-[9px] tracking-[2px] text-mist uppercase">
+                Status: &mdash;
               </span>
             </div>
 
@@ -76,23 +70,23 @@ export function SearchView({
             <div className="grid grid-cols-2 gap-2 mb-4">
               <button
                 onClick={() => onPersonaChange("flying")}
-                className={`h-12 rounded-xl text-sm font-semibold font-body flex items-center justify-center gap-2 btn-press transition-all ${
+                className={`h-12 rounded-lg text-sm font-semibold font-body flex items-center justify-center gap-2 btn-press transition-all focus:outline-none focus:ring-2 focus:ring-flap-amber ${
                   persona === "flying"
-                    ? "bg-amber text-tarmac"
-                    : "bg-transparent text-[#AAAAAA] border border-gray-border"
+                    ? "bg-flap-amber text-board-ink"
+                    : "bg-transparent text-mist border border-hairline"
                 }`}
               >
-                <span className="text-base">{"✈️"}</span> I&apos;m flying
+                I&apos;m flying
               </button>
               <button
                 onClick={() => onPersonaChange("pickup")}
-                className={`h-12 rounded-xl text-sm font-semibold font-body flex items-center justify-center gap-2 btn-press transition-all ${
+                className={`h-12 rounded-lg text-sm font-semibold font-body flex items-center justify-center gap-2 btn-press transition-all focus:outline-none focus:ring-2 focus:ring-flap-amber ${
                   persona === "pickup"
-                    ? "bg-amber text-tarmac"
-                    : "bg-transparent text-[#AAAAAA] border border-gray-border"
+                    ? "bg-flap-amber text-board-ink"
+                    : "bg-transparent text-mist border border-hairline"
                 }`}
               >
-                <span className="text-base">{"\u{1F697}"}</span> Picking up
+                Picking up
               </button>
             </div>
 
@@ -103,99 +97,97 @@ export function SearchView({
                 inputMode="text"
                 autoComplete="off"
                 autoCapitalize="characters"
-                placeholder="Enter flight number"
+                placeholder="ENTER FLIGHT NUMBER"
                 value={flightNumber}
                 onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === "Enter" && onSearch()}
-                className="w-full h-14 bg-gray-input border-[1.5px] border-gray-border rounded-xl px-4 font-mono text-xl tracking-[2px] text-tarmac placeholder:text-[#CCCCCC] placeholder:tracking-[1px] focus:outline-none focus:border-amber focus:shadow-[0_0_0_3px_#FDF0D5] transition-all"
+                className="w-full h-14 bg-board-panel border-[1.5px] border-hairline rounded-lg px-4 font-mono uppercase text-xl tracking-[2px] text-chalk placeholder:text-mist/50 placeholder:tracking-[1px] focus:outline-none focus:border-flap-amber focus:ring-2 focus:ring-flap-amber/40 transition-all"
               />
               {flightNumber && (
                 <button
                   onClick={() => setFlightNumber("")}
                   aria-label="Clear flight number"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray rounded-full hover:bg-gray-input"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-mist rounded-full hover:bg-board-ink"
                 >
-                  {"✕"}
+                  {"×"}
                 </button>
               )}
             </div>
             {demoMode && (
-              <p className="font-mono text-[11px] text-[#AAAAAA] mt-2 ml-1">
+              <p className="font-mono text-[11px] text-mist mt-2 ml-1">
                 Try 6E-456, AI-302, or UK-835
               </p>
             )}
-            {error && <p className="text-red text-sm mt-2 ml-1">{error}</p>}
-          </div>
+            {error && <p className="text-flap-red text-sm mt-2 ml-1">{error}</p>}
 
-          {/* Perforation + stub */}
-          <div className="pass-stub bg-white rounded-b-[20px] border-t border-dashed border-gray-border px-5 pt-4 pb-5">
             <button
               onClick={onSearch}
               disabled={flightNumber.trim().length < 3 || loading}
-              className="w-full h-[52px] bg-stripe text-white font-semibold text-[15px] tracking-[1px] rounded-xl btn-press disabled:opacity-40 disabled:cursor-default transition-all flex items-center justify-center"
+              className="w-full h-[52px] mt-4 bg-flap-amber text-board-ink font-semibold text-[15px] tracking-[1.5px] uppercase font-mono rounded-lg btn-press disabled:opacity-40 disabled:cursor-default transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-flap-amber focus:ring-offset-2 focus:ring-offset-board-well"
             >
               {loading ? (
-                <span className="inline-block animate-bounce text-xl">
-                  {"\u{1F6EB}"}
+                <span className="inline-flex gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-board-ink animate-text-pulse" />
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-board-ink animate-text-pulse"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-board-ink animate-text-pulse"
+                    style={{ animationDelay: "300ms" }}
+                  />
                 </span>
               ) : (
-                "Track flight →"
+                "Track flight"
               )}
             </button>
-            <div className="flex items-center justify-between mt-3">
-              <span className="font-mono text-[9px] tracking-[2px] text-[#AAAAAA] uppercase">
-                No signup &middot; Free &middot; Refreshes live
-              </span>
-              <div className="barcode h-[14px] w-[72px]" aria-hidden />
-            </div>
+            <p className="font-mono text-[9px] tracking-[2px] text-mist uppercase text-center mt-3">
+              No signup &middot; Free &middot; Refreshes live
+            </p>
           </div>
         </div>
-
-        {/* Runway */}
-        <div className="runway-lines mt-6 mx-8" />
       </div>
 
       {/* ─── How it knows first ──────────────────────────────── */}
       <div className="px-4 py-6">
-        <div
-          className="bg-white rounded-2xl p-5 mx-auto max-w-md"
-          style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}
-        >
+        <div className="bg-board-panel border border-hairline rounded-2xl p-5 mx-auto max-w-md">
           <div className="flex items-center justify-between mb-4">
-            <span className="font-mono text-[10px] tracking-[3px] text-amber uppercase font-semibold">
+            <span className="font-mono text-[10px] tracking-[3px] text-flap-amber uppercase font-semibold">
               How it knows first
             </span>
-            <span className="font-mono text-[11px] text-gray">VT-ITC</span>
+            <span className="font-mono text-[11px] text-mist">VT-ITC</span>
           </div>
 
           {/* One aircraft, two legs — the delay travels with the plane */}
           <div className="flex items-center gap-3">
             <div className="text-center shrink-0">
-              <div className="font-mono text-sm font-semibold text-tarmac">
+              <div className="font-mono text-sm font-semibold text-chalk">
                 BLR → DEL
               </div>
-              <div className="text-[10px] text-gray mt-0.5">inbound leg</div>
-              <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-amber-light border border-amber/30 font-mono text-[10px] font-semibold text-amber">
+              <div className="text-[10px] text-mist mt-0.5">inbound leg</div>
+              <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-flap-amber/10 border border-flap-amber/30 font-mono text-[10px] font-semibold text-flap-amber">
                 +40 MIN LATE
               </span>
             </div>
             <div className="flex-1 flex items-center min-w-0">
-              <div className="flex-1 border-t-2 border-dashed border-amber/40" />
-              <span className="text-sm mx-1 shrink-0">{"✈️"}</span>
-              <div className="flex-1 border-t-2 border-dashed border-amber/40" />
+              <div className="flex-1 border-t-2 border-dashed border-flap-amber/40" />
+              <span className="text-flap-amber mx-1 shrink-0" aria-hidden>
+                &rarr;
+              </span>
+              <div className="flex-1 border-t-2 border-dashed border-flap-amber/40" />
             </div>
             <div className="text-center shrink-0">
-              <div className="font-mono text-sm font-semibold text-tarmac">
+              <div className="font-mono text-sm font-semibold text-chalk">
                 DEL → BOM
               </div>
-              <div className="text-[10px] text-gray mt-0.5">your flight</div>
-              <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-red/10 border border-red/30 font-mono text-[10px] font-semibold text-red">
+              <div className="text-[10px] text-mist mt-0.5">your flight</div>
+              <span className="inline-block mt-1.5 px-2 py-0.5 rounded-full bg-flap-red/10 border border-flap-red/30 font-mono text-[10px] font-semibold text-flap-red">
                 DELAY LIKELY
               </span>
             </div>
           </div>
 
-          <p className="text-[13px] text-gray leading-[1.6] mt-4">
+          <p className="text-[13px] text-mist leading-[1.6] mt-4 font-body">
             The same physical aircraft flies both legs. When it lands late in
             Delhi, your Mumbai departure slips with it &mdash; Wheels Down sees
             that the moment it happens, while the departure board still says
@@ -212,27 +204,20 @@ export function SearchView({
               <button
                 key={demo.id}
                 onClick={() => onDemoPill(demo.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border transition-all btn-press ${
+                className={`flex items-center gap-2 px-4 py-2.5 bg-board-panel rounded-lg border transition-all btn-press ${
                   flightNumber === demo.id
-                    ? "border-amber bg-amber-light"
-                    : "border-gray-light"
+                    ? "border-flap-amber"
+                    : "border-hairline"
                 }`}
-                style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
               >
-                <span className="font-mono text-xs font-semibold text-tarmac">
+                <span className="font-mono text-xs font-semibold text-chalk">
                   {demo.id}
                 </span>
-                <span className="text-xs text-gray font-body">{demo.route}</span>
+                <span className="text-xs text-mist font-body">{demo.route}</span>
                 {demo.delay && (
                   <>
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: demo.color }}
-                    />
-                    <span
-                      className="font-mono text-[11px] font-semibold"
-                      style={{ color: demo.color }}
-                    >
+                    <span className={`w-2 h-2 rounded-full shrink-0 ${demo.dot}`} />
+                    <span className={`font-mono text-[11px] font-semibold ${demo.color}`}>
                       {demo.delay}
                     </span>
                   </>
@@ -244,11 +229,11 @@ export function SearchView({
       )}
 
       {/* ─── Open source footer ──────────────────────────────── */}
-      <div className="mt-auto border-t border-gray-light bg-white px-4 py-8 text-center">
-        <p className="font-mono text-[10px] tracking-[3px] text-[#AAAAAA] uppercase mb-2">
+      <div className="mt-auto border-t border-hairline px-4 py-8 text-center">
+        <p className="font-mono text-[10px] tracking-[3px] text-mist uppercase mb-2">
           Built in the open
         </p>
-        <p className="text-[13px] text-gray max-w-[340px] mx-auto leading-[1.6]">
+        <p className="text-[13px] text-mist max-w-[340px] mx-auto leading-[1.6] font-body">
           Wheels Down is MIT-licensed.{" "}
           {demoMode
             ? "This demo runs on simulated flights — plug in a Flightradar24 API key for live tracking."
@@ -258,7 +243,7 @@ export function SearchView({
           href={GITHUB_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 h-10 px-5 mt-4 bg-tarmac text-white rounded-xl text-[13px] font-semibold btn-press"
+          className="inline-flex items-center gap-2 h-10 px-5 mt-4 bg-board-panel border border-hairline text-chalk rounded-lg text-[13px] font-semibold btn-press focus:outline-none focus:ring-2 focus:ring-flap-amber"
         >
           <GitHubIcon />
           View on GitHub

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -34,7 +34,7 @@
 
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-cloud text-tarmac antialiased;
+    @apply bg-board-ink text-chalk antialiased;
   }
 }
 
@@ -45,7 +45,7 @@ input[type="range"] {
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: #E0E0E0;
+  background: #05070A;
   outline: none;
 }
 
@@ -55,9 +55,9 @@ input[type="range"]::-webkit-slider-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: white;
-  border: 2px solid #E8A020;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  background: #0C1016;
+  border: 2px solid #FFB01A;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   /* 44px hit area */
   padding: 10px;
@@ -69,9 +69,9 @@ input[type="range"]::-moz-range-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: white;
-  border: 2px solid #E8A020;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  background: #0C1016;
+  border: 2px solid #FFB01A;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
 
@@ -83,93 +83,14 @@ input[type="range"]::-webkit-slider-runnable-track {
 input[type="range"]::-moz-range-track {
   height: 4px;
   border-radius: 2px;
-  background: #E0E0E0;
-}
-
-/* ===== CONTRAIL ===== */
-.contrail {
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  height: 1px;
-  border-top: 2px dashed rgba(44, 44, 44, 0.15);
-  transform: translateY(-50%);
-  animation: contrail 20s linear infinite;
-}
-
-/* ===== SKY GRADIENT BACKGROUND ===== */
-.sky-gradient {
-  background: linear-gradient(180deg, #C9E8F7 0%, #E8F4FD 45%, #FAFAF8 100%);
-}
-
-/* ===== AERONAUTICAL GRID ===== */
-.aero-grid {
-  background-image:
-    linear-gradient(rgba(44, 44, 44, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(44, 44, 44, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* ===== RUNWAY LINES ===== */
-.runway-lines {
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 20px,
-    rgba(44, 44, 44, 0.06) 20px,
-    rgba(44, 44, 44, 0.06) 40px
-  );
-  height: 2px;
-}
-
-/* ===== BOARDING PASS ===== */
-/* Semicircle notches punched out of the seam between the pass body and its
-   stub, using masks so they work over any backdrop (the sky gradient). Each
-   half masks its own half-circle; browsers without mask-composite simply
-   render an un-notched card. */
-.pass-main {
-  -webkit-mask-image:
-    radial-gradient(circle 10px at 0 100%, transparent 98%, #000 100%),
-    radial-gradient(circle 10px at 100% 100%, transparent 98%, #000 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    radial-gradient(circle 10px at 0 100%, transparent 98%, #000 100%),
-    radial-gradient(circle 10px at 100% 100%, transparent 98%, #000 100%);
-  mask-composite: intersect;
-}
-
-.pass-stub {
-  -webkit-mask-image:
-    radial-gradient(circle 10px at 0 0, transparent 98%, #000 100%),
-    radial-gradient(circle 10px at 100% 0, transparent 98%, #000 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    radial-gradient(circle 10px at 0 0, transparent 98%, #000 100%),
-    radial-gradient(circle 10px at 100% 0, transparent 98%, #000 100%);
-  mask-composite: intersect;
-}
-
-/* ===== BARCODE ===== */
-.barcode {
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(44, 44, 44, 0.55) 0px,
-    rgba(44, 44, 44, 0.55) 1px,
-    transparent 1px,
-    transparent 3px,
-    rgba(44, 44, 44, 0.55) 3px,
-    rgba(44, 44, 44, 0.55) 5px,
-    transparent 5px,
-    transparent 6px
-  );
+  background: #05070A;
 }
 
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fly-across,
-  .animate-float,
   .animate-pulse-amber,
-  .contrail {
+  .animate-flap-flip,
+  .animate-text-pulse {
     animation: none !important;
   }
 }
@@ -196,7 +117,7 @@ input[type="range"]::-moz-range-track {
 /* ===== STRUCK THROUGH TEXT ===== */
 .struck {
   text-decoration: line-through;
-  text-decoration-color: rgba(138, 138, 138, 0.5);
+  text-decoration-color: rgba(137, 146, 163, 0.5);
 }
 
 /* ===== CROSSFADE ===== */
@@ -211,4 +132,14 @@ input[type="range"]::-moz-range-track {
 
 .nav-safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===== FLIP BOARD (split-flap tiles) ===== */
+.flap-tile {
+  perspective: 240px;
+}
+
+.flap-tile-inner {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }

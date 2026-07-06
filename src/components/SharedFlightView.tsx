@@ -54,28 +54,27 @@ export function SharedFlightView({
 
   if (loading) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-cloud">
-        <div className="inline-block text-3xl animate-bounce mb-4">
-          {"\u{1F6EB}"}
+      <main className="min-h-screen flex flex-col items-center justify-center bg-board-ink">
+        <div className="font-mono text-flap-amber text-sm tracking-[2px] animate-text-pulse mb-4">
+          TRACKING
         </div>
-        <p className="text-gray text-sm">Tracking {flightId}...</p>
+        <p className="text-mist text-sm font-body">Tracking {flightId}...</p>
       </main>
     );
   }
 
   if (error || !flight) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-cloud px-6">
-        <div className="text-4xl mb-4">{"✈️"}</div>
-        <h2 className="font-display text-xl font-bold text-tarmac mb-2">
+      <main className="min-h-screen flex flex-col items-center justify-center bg-board-ink px-6">
+        <h2 className="font-display text-xl font-bold text-chalk mb-2">
           Flight not found
         </h2>
-        <p className="text-gray text-sm text-center mb-6">
+        <p className="text-mist text-sm text-center mb-6 font-body">
           {error ?? "The link may be invalid."}
         </p>
         <a
           href="/"
-          className="inline-flex h-12 items-center px-6 bg-stripe text-white rounded-xl font-semibold text-sm btn-press"
+          className="inline-flex h-12 items-center px-6 bg-flap-amber text-board-ink rounded-xl font-semibold text-sm btn-press focus:outline-none focus:ring-2 focus:ring-flap-amber"
         >
           Track a flight
         </a>
@@ -84,7 +83,7 @@ export function SharedFlightView({
   }
 
   return (
-    <div className="min-h-screen bg-gray-input">
+    <div className="min-h-screen bg-board-ink">
       {flight.dataSource === "demo" && <DemoBanner />}
       <AppHeader flightNumber={flight.flightNumber} />
       <div className="p-4">
@@ -96,7 +95,7 @@ export function SharedFlightView({
         <div className="text-center pt-6 pb-8">
           <a
             href="/"
-            className="text-xs text-[#AAAAAA] hover:text-gray transition-colors"
+            className="text-xs text-mist hover:text-chalk transition-colors"
           >
             Track a different flight
           </a>

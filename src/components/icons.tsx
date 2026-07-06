@@ -1,11 +1,3 @@
-export function PlaneSVG({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 80 80" className={className} fill="#2C2C2C" opacity="0.7">
-      <path d="M40 10 L48 35 L72 38 L72 42 L48 45 L52 65 L44 62 L40 50 L36 62 L28 65 L32 45 L8 42 L8 38 L32 35 Z" />
-    </svg>
-  );
-}
-
 export function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5 mr-2 shrink-0">
@@ -18,6 +10,59 @@ export function GitHubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 16 16" fill="currentColor" className={className}>
       <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  );
+}
+
+export function FlightTailIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M2.5 16.5L21.5 8.5L21.5 6.5L2.5 12.5V16.5Z" />
+      <path d="M10.5 13.5L9 20.5L11.5 19.5L13 14.5" />
+    </svg>
+  );
+}
+
+export function PickupCarIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M4 16V12.5L6 8h12l2 4.5V16" />
+      <path d="M2.5 16h19" />
+      <circle cx="7" cy="17.5" r="1.75" />
+      <circle cx="17" cy="17.5" r="1.75" />
+    </svg>
+  );
+}
+
+export function SearchIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="M20 20L15.2 15.2" />
     </svg>
   );
 }
