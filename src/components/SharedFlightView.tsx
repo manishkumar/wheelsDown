@@ -85,7 +85,7 @@ export function SharedFlightView({
   return (
     <div className="min-h-screen bg-board-ink">
       {flight.dataSource === "demo" && <DemoBanner />}
-      <AppHeader flightNumber={flight.flightNumber} />
+      <AppHeader flight={flight} />
       <div className="p-4">
         {variant === "pickup" ? (
           <PickupPanel flight={flight} />

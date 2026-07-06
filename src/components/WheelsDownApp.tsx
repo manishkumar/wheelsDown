@@ -125,7 +125,7 @@ export function WheelsDownApp({ demoMode }: { demoMode: boolean }) {
 
         {activeTab === "flight" && flight && (
           <div className="bg-board-ink min-h-screen">
-            <AppHeader flightNumber={flight.flightNumber} />
+            <AppHeader flight={flight} />
             <div className="p-4">
               <FlightStatusPanel flight={flight} onShare={handleWhatsAppShare} />
             </div>
@@ -134,7 +134,7 @@ export function WheelsDownApp({ demoMode }: { demoMode: boolean }) {
 
         {activeTab === "pickup" && flight && (
           <div className="bg-board-ink min-h-screen">
-            <AppHeader flightNumber={flight.flightNumber} />
+            <AppHeader flight={flight} />
             <div className="p-4">
               <PickupPanel flight={flight} />
             </div>

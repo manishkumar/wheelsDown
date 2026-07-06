@@ -20,6 +20,47 @@ function useReducedMotion() {
   return reduced;
 }
 
+let sharedAudioCtx: AudioContext | null = null;
+
+/** A quiet, dry mechanical tick — a short filtered noise burst, not a tone.
+ * Created lazily (and only after a user gesture) since browsers block
+ * AudioContext until then; failures are silently ignored. */
+function playFlapTick() {
+  try {
+    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) return;
+    sharedAudioCtx ??= new Ctx();
+    const ctx = sharedAudioCtx;
+    if (ctx.state === "suspended") {
+      void ctx.resume();
+      return;
+    }
+
+    const duration = 0.03;
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    }
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = 2200;
+    filter.Q.value = 0.7;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0.05;
+
+    noise.connect(filter).connect(gain).connect(ctx.destination);
+    noise.start();
+  } catch {
+    /* audio is a nicety, never let it break the animation */
+  }
+}
+
 /** A single split-flap character tile: amber glyph on a recessed board-well
  * face, with a thin hairline seam across the middle like a real flap unit. */
 function FlapTile({
@@ -57,6 +98,7 @@ function FlapTile({
         () => {
           setDisplay(char);
           setFlipKey((k) => k + 1);
+          playFlapTick();
         },
         delayMs + i * flipDurationMs
       );
